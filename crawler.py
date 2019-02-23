@@ -1,10 +1,10 @@
 import pandas as pd
 import tweepy
 
-consumer_key = 'CAFQUfr5Tw3rYhTdEXl1x350M'
-consumer_secret = '3DouNQo4oEaLStSSWORJB3EQrX5FIg9k7DTvpYJTLAKETeqnEk'
-access_token = '1096400473060327426-pLF9C8lFvtwOvsJOyP1zSVxQiZ9xz1'
-access_token_secret = 'oczm1RtGSSnU1uTwPBwfxXtewYwi3Duev16qZKn70i3eZ'
+consumer_key = ''
+consumer_secret = ''
+access_token = ''
+access_token_secret = ''
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
@@ -18,16 +18,17 @@ for friend in tweepy.Cursor(api.friends, screen_name='verified').items():
         tweets = []
         user = friend.screen_name
         try:
-            for tweet in api.user_timeline(screen_name=user, include_rts=False):
+            for tweet in tweepy.Cursor(api.user_timeline, screen_name=user, include_rts=False).items():
                 if(tweet.lang == 'en'):
                     tweets.append(tweet.text)
 
-                    if(len(tweets) == 10):
+                    if(len(tweets) == 100):
                         print(len(data), user)
                         data[user] = tweets
                         break
-        except tweepy.TweepError:
+        except (tweepy.TweepError, tweepy.error.TweepError) as e:
             print('Failed to query tweets from user ', user)
 
-df = pd.DataFrame.from_dict(data, orient='index')
-df.to_csv(r'dataset.csv', encoding='utf-8')
+    if(len(data) % 100 == 0):
+        df = pd.DataFrame.from_dict(data, orient='index')
+        df.to_csv(r'dataset.csv', encoding='utf-8')
