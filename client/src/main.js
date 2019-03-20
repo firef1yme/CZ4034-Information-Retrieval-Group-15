@@ -1,14 +1,13 @@
 import Vue from 'vue'
 import App from './App.vue'
-
+import addIcons from './utils/icons.js'
 import 'bootstrap'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faCoffee)
+addIcons(library)
 
 Vue.component('icon', FontAwesomeIcon)
 Vue.config.productionTip = false
