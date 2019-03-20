@@ -1,8 +1,11 @@
 <template>
   <div id="app">
-    <sidebar />
+    <sidebar :isOpen="sidebarOpen" :query="searchQuery"/>
     <main id="page-wrap">
-      <tweets />
+      <div class="container mt-4">
+        <search-bar :isOpen="sidebarOpen" :query="searchQuery" />
+        <tweets />
+      </div>
     </main>
   </div>
 </template>
@@ -18,7 +21,23 @@ export default {
     Sidebar,
     Tweets,
     SearchBar,
-  }
+  },
+  data () {
+      return {
+          sidebarOpen: true,
+          searchQuery: {
+            age: [25, 75],
+            search: "",
+            location: "",
+            gender: "",
+            language: "",
+          },
+      }
+  },
+  params: {
+    searchQuery: Object,
+    sidebarOpen: Boolean,
+  },
 }
 </script>
 
@@ -30,8 +49,4 @@ export default {
   color: #2c3e50;
 }
 
-#page-wrap {
-  margin-top: 60px;
-  text-align: center;
-}
 </style>
