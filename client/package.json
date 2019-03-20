@@ -15,7 +15,8 @@
     "jquery": "^3.3.1",
     "popper.js": "^1.14.7",
     "vue": "^2.6.6",
-    "vue-burger-menu": "^2.0.1"
+    "vue-burger-menu": "^2.0.1",
+    "vue-slider-component": "^3.0.16"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.5.0",
