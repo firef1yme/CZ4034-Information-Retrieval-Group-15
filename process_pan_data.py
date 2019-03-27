@@ -27,7 +27,7 @@ def main():
         labels = user_labels[root.attrib['id']]
         
         for child in root:
-            tweet = child.text[:-2].casefold() # Casefold and ignore last two tabs
+            tweet = child.text[:-2] # Ignore last two tabs
             entry = {'tweet': tweet,
                     'gender': labels[0],
                     'age_group': labels[1],
