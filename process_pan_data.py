@@ -27,7 +27,8 @@ def main():
         labels = user_labels[root.attrib['id']]
         
         for child in root:
-            tweet = child.text[:-2] # Ignore last two characters, they are tabs for some reason
+            tweet = child.text[:-2].lower() # Lowercase and ignore last two characters, they're tabs
+            
             entry = {'tweet': tweet,
                     'gender': labels[0],
                     'age_group': labels[1],
@@ -48,11 +49,9 @@ def main():
 def make_numerical(labels):
     """
     Transforms text labels into numerical data.
-    
-    Personality scores are turned into 0/1 binary classification.
     """
     genders = {'M': 0, 'F': 1}
-    age_groups = {'18-24': 0, '25-34': 1, '35-49': 2, '50-XX': 3}
+    age_groups = {'18-24': 0, '25-34': 1, '35-49': 2, '50-XX': 2}
 
     res = []
     res.append(genders[labels[0]])
