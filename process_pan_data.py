@@ -27,7 +27,7 @@ def main():
         labels = user_labels[root.attrib['id']]
         
         for child in root:
-            tweet = preprocess(child.text)
+            tweet = child.text[:-2] # Ignore last two characters, they are tabs for some reason
             entry = {'tweet': tweet,
                     'gender': labels[0],
                     'age_group': labels[1],
@@ -41,11 +41,16 @@ def main():
     # Output results to csv file
     df = pd.DataFrame(dataset)
     df = df[['tweet', 'gender', 'age_group', 'extraversion', 'neuroticism', 'agreeableness', 'conscientiousness', 'openness']]
+    df = preprocess(df)
     df.to_csv('train.csv', encoding='utf-8', index=False)
 
 
 def make_numerical(labels):
-    """Transforms text labels into numerical data."""
+    """
+    Transforms text labels into numerical data.
+    
+    Personality scores are turned into 0/1 binary classification.
+    """
     genders = {'M': 0, 'F': 1}
     age_groups = {'18-24': 0, '25-34': 1, '35-49': 2, '50-XX': 3}
 
@@ -61,10 +66,11 @@ def make_numerical(labels):
     return res
 
 
-def preprocess(text):
-    """TODO"""
-    return text
-
+def preprocess(data):
+    data = data.replace('http\S+|www.\S+', '~', regex=True)
+    data = data.replace('@\S+', '@', regex=True)
+    
+    return data
 
 if __name__ == '__main__':
     main()
