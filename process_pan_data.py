@@ -29,18 +29,18 @@ def main():
         for child in root:
             tweet = child.text[:-2] # Ignore last two tabs
             entry = {'tweet': tweet,
-                    'gender': labels[0],
-                    'age_group': labels[1],
-                    'extraversion': labels[2],
-                    'neuroticism': labels[3],
-                    'agreeableness': labels[4],
-                    'conscientiousness': labels[5],
-                    'openness': labels[6]}
+                    'sex': labels[0],
+                    'age': labels[1],
+                    'ext': labels[2],
+                    'sta': labels[3],
+                    'agr': labels[4],
+                    'con': labels[5],
+                    'opn': labels[6]}
             dataset.append(entry)
 
     # Output results to csv file
     df = pd.DataFrame(dataset)
-    df = df[['tweet', 'gender', 'age_group', 'extraversion', 'neuroticism', 'agreeableness', 'conscientiousness', 'openness']]
+    df = df[['tweet', 'sex', 'age', 'ext', 'sta', 'agr', 'con', 'opn']]
     df = preprocess(df)
     df.to_csv('train.csv', encoding='utf-8', index=False)
 

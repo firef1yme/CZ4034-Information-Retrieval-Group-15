@@ -1,4 +1,4 @@
-tweet,gender,age_group,extraversion,neuroticism,agreeableness,conscientiousness,openness
+tweet,sex,age,ext,sta,agr,con,opn
 @ does Heroes of the Storm count?,0,1,0.2,0.2,0.1,0.1,0.5
 #E3 + following some game people = one bajillion tweets per second.,0,1,0.2,0.2,0.1,0.1,0.5
 "@ bringing new meaning to the term ""board member""",0,1,0.2,0.2,0.1,0.1,0.5
