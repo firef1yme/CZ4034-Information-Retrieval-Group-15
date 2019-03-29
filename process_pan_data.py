@@ -67,6 +67,7 @@ def make_numerical(labels):
 def preprocess(data):
     data = data.replace('http\S+|www.\S+', '~', regex=True)
     data = data.replace('@\S+', '@', regex=True)
+    data = data.replace('#\S+', '#', regex=True)
     
     return data
 
