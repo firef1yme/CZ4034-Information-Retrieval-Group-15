@@ -44,7 +44,7 @@ def preprocess(text):
             else:
                 res += word + ' '
 
-    return res[:-1] # Skip last space character
+    return res[:-1].lower() # Skip last space character
 
 
     
