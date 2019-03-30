@@ -36,7 +36,7 @@ def preprocess(text):
             if word == '@URL':
                 # URLs are followed by 10 random characters, ignore these
                 chars_to_skip = 10
-                res += '~ '
+                res += '~. '
             elif word == '@USER':
                 res += '@ '
             elif word == '@HASHTAG':
