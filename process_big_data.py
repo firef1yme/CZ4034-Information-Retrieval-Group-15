@@ -8,9 +8,9 @@ def main():
     labels = {'m': 0, 'f': 1, 'E': 0, 'I': 1, 'S': 0, 'N': 1, 'T': 0, 'F': 1, 'J': 0, 'P': 1}
     for line in lines:
         personality, gender, _, text = line.strip().split("\t", 4)
-        text = preprocess(text.decode('utf-8'))
+        text = preprocess(text)
 
-        entry = {'tweet': text,
+        entry = {'tweet': text.decode('utf-8'),
                  'm/f': labels[gender],
                  'e/i': labels[personality[0]],
                  's/n': labels[personality[1]],
@@ -22,7 +22,7 @@ def main():
     df = pd.DataFrame(dataset)
     df = df[['tweet', 'm/f', 'e/i', 's/n', 't/f', 'j/p']]
     df.to_csv('big_train.csv', encoding='utf-8', index=False)
-    print(df['tweet'].head(5).values)
+    print(df['tweet'].head(1).values[0])
 
 
 def preprocess(text):
@@ -34,16 +34,19 @@ def preprocess(text):
             chars_to_skip -= len(word)
         else:
             if word == '@URL':
-                # URLs are followed by 10 random characters, ignore these
+                # URLs are followed by 10 random characters, skip these
                 chars_to_skip = 10
                 res += '~. '
+            elif (word == 'amp' or word == ';') and res[-2] == '&':
+                # Ampersands are followed by the string 'amp ;', skip these
+                continue
             elif word == '@USER':
                 res += '@ '
             elif word == '@HASHTAG':
                 res += '# '
             else:
                 res += word + ' '
-
+                    
     return res[:-1].lower() # Skip last space character
 
 
