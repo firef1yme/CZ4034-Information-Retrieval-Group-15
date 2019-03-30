@@ -1,28 +1,41 @@
 import pandas as pd
 
 def main():
-    with open('100g.all', 'r') as f:
+    with open('2000g.all', 'r') as f:
         lines = f.read().splitlines()
             
     dataset = []
-    labels = {'m': 0, 'f': 1, 'E': 0, 'I': 1, 'S': 0, 'N': 1, 'T': 0, 'F': 1, 'J': 0, 'P': 1}
+    labels = {'m': 0, 'f': 1,
+              'E': 0, 'I': 1,
+              'S': 0, 'N': 1,
+              'T': 0, 'F': 1,
+              'J': 0, 'P': 1}
+    
     for line in lines:
-        personality, gender, _, text = line.strip().split("\t", 4)
-        text = preprocess(text)
+        personality, gender, tweet_count, text = line.strip().split("\t", 4)
+        text = preprocess(text).decode('utf-8')
 
-        entry = {'tweet': text.decode('utf-8'),
-                 'm/f': labels[gender],
-                 'e/i': labels[personality[0]],
-                 's/n': labels[personality[1]],
-                 't/f': labels[personality[2]],
-                 'j/p': labels[personality[3]]}
-        dataset.append(entry)
+        avg_len = len(text) / int(tweet_count)
+
+        tweet = u''
+        for word in text.split(' '):
+            tweet += word + u' '
+            if len(tweet) > avg_len:
+                entry = {'tweet': tweet[:-1],
+                         'm/f': labels[gender],
+                         'e/i': labels[personality[0]],
+                         's/n': labels[personality[1]],
+                         't/f': labels[personality[2]],
+                         'j/p': labels[personality[3]]}
+                dataset.append(entry)
+                tweet = u''
 
     # Output results to csv file
     df = pd.DataFrame(dataset)
     df = df[['tweet', 'm/f', 'e/i', 's/n', 't/f', 'j/p']]
     df.to_csv('big_train.csv', encoding='utf-8', index=False)
-    print(df['tweet'].head(1).values[0])
+    print(df.shape)
+    print(df['tweet'].head(5).values)
 
 
 def preprocess(text):
@@ -36,7 +49,7 @@ def preprocess(text):
             if word == '@URL':
                 # URLs are followed by 10 random characters, skip these
                 chars_to_skip = 10
-                res += '~. '
+                res += '~ '
             elif (word == 'amp' or word == ';') and res[-2] == '&':
                 # Ampersands are followed by the string 'amp ;', skip these
                 continue
@@ -46,8 +59,10 @@ def preprocess(text):
                 res += '# '
             else:
                 res += word + ' '
-                    
-    return res[:-1].lower() # Skip last space character
+
+    res.lower()
+    
+    return res[:-1] # Skip last space character
 
 
     
