@@ -8,7 +8,7 @@ def main():
     labels = {'m': 0, 'f': 1, 'E': 0, 'I': 1, 'S': 0, 'N': 1, 'T': 0, 'F': 1, 'J': 0, 'P': 1}
     for line in lines:
         personality, gender, _, text = line.strip().split("\t", 4)
-        text = preprocess(text)
+        text = preprocess(text.decode('utf-8'))
 
         entry = {'tweet': text,
                  'm/f': labels[gender],
@@ -22,7 +22,7 @@ def main():
     df = pd.DataFrame(dataset)
     df = df[['tweet', 'm/f', 'e/i', 's/n', 't/f', 'j/p']]
     df.to_csv('big_train.csv', encoding='utf-8', index=False)
-    print(df['tweet'])
+    print(df['tweet'].head(5).values)
 
 
 def preprocess(text):
