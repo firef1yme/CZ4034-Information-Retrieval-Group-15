@@ -28,7 +28,8 @@ def main():
         
         for child in root:
             tweet = child.text[:-2] # Ignore last two tabs
-            entry = {'tweet': tweet,
+            entry = {'user': fname[:-4],
+                    'tweet': tweet,
                     'sex': labels[0],
                     'age': labels[1],
                     'ext': labels[2],
@@ -40,7 +41,7 @@ def main():
 
     # Output results to csv file
     df = pd.DataFrame(dataset)
-    df = df[['tweet', 'sex', 'age', 'ext', 'sta', 'agr', 'con', 'opn']]
+    df = df[['user', 'tweet', 'sex', 'age', 'ext', 'sta', 'agr', 'con', 'opn']]
     df = preprocess(df)
     df.to_csv('train.csv', encoding='utf-8', index=False)
 
