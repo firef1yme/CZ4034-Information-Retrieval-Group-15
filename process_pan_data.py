@@ -42,7 +42,7 @@ def main():
     # Output results to csv file
     df = pd.DataFrame(dataset)
     df = df[['user', 'tweet', 'sex', 'age', 'ext', 'sta', 'agr', 'con', 'opn']]
-    df = preprocess(df)
+    df['tweet'] = preprocess(df['tweet'])
     df.to_csv('train.csv', encoding='utf-8', index=False)
 
 
@@ -66,8 +66,13 @@ def make_numerical(labels):
 
 
 def preprocess(data):
+    special_chars = ' #@~'
     data = data.replace('http\S+|www.\S+', '~', regex=True)
     data = data.replace('@\S+', '@', regex=True)
+    data = data.apply(lambda s: s.lower())
+    data = data.apply(lambda s: ''.join(
+                                list(map(lambda c: c if (c.isalnum() or c in special_chars) else '', s))))
+    data = data.replace(' +', ' ', regex=True)
     
     return data
 
