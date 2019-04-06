@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import xml.etree.ElementTree as ET
+from unidecode import unidecode
 
 def main():
     path = 'pan15-author-profiling-training-dataset-english-2015-03-02/'
@@ -70,6 +71,7 @@ def preprocess(data):
     data = data.replace('http\S+|www.\S+', '~', regex=True)
     data = data.replace('@\S+', '@', regex=True)
     data = data.apply(lambda s: s.lower())
+    data = data.apply(unidecode)
     data = data.apply(lambda s: ''.join(
                                 list(map(lambda c: c if (c.isalnum() or c in special_chars) else '', s))))
     data = data.replace(' +', ' ', regex=True)
